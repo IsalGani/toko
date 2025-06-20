@@ -15,15 +15,15 @@
 <body>
     <table width="100%">
         <tr>
-            @foreach ($dataproduk as $produk)
+            @foreach ($dataproduct as $product)
                 <td class="text-center" style="border: 1px solid #333;">
-                    <p>{{ $produk->nama_produk }} - Rp. {{ format_uang($produk->harga_jual) }}</p>
-                    <img src="data:image/png;base64,{{ DNS1D::getBarcodePNG($produk->kode_produk, 'C39') }}" 
-                        alt="{{ $produk->kode_produk }}"
+                    <p>{{ $product->nama_product }} - Rp. {{ format_uang($product->harga_jual) }}</p>
+                    <img src="data:image/png;base64,{{ DNS1D::getBarcodePNG($product->kode_product, 'C39') }}" 
+                        alt="{{ $product->kode_product }}"
                         width="180"
                         height="60">
                     <br>
-                    {{ $produk->kode_produk }}
+                    {{ $product->kode_product }}
                 </td>
                 @if ($no++ % 3 == 0)
                     </tr><tr>

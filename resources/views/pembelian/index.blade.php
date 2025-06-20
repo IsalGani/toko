@@ -24,7 +24,7 @@
                     <thead>
                         <th width="5%">No</th>
                         <th>Tanggal</th>
-                        <th>Supplier</th>
+                        <th></th>
                         <th>Total Item</th>
                         <th>Total Harga</th>
                         <th>Diskon</th>
@@ -37,7 +37,7 @@
     </div>
 </div>
 
-@includeIf('pembelian.supplier')
+@includeIf('pembelian.')
 @includeIf('pembelian.detail')
 @endsection
 
@@ -55,7 +55,7 @@
             columns: [
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
                 {data: 'tanggal'},
-                {data: 'supplier'},
+                {data: ''},
                 {data: 'total_item'},
                 {data: 'total_harga'},
                 {data: 'diskon'},
@@ -64,15 +64,15 @@
             ]
         });
 
-        $('.table-supplier').DataTable();
+        $('.table-').DataTable();
         table1 = $('.table-detail').DataTable({
             processing: true,
             bSort: false,
             dom: 'Brt',
             columns: [
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
-                {data: 'kode_produk'},
-                {data: 'nama_produk'},
+                {data: 'kode_product'},
+                {data: 'nama_product'},
                 {data: 'harga_beli'},
                 {data: 'jumlah'},
                 {data: 'subtotal'},
@@ -81,7 +81,7 @@
     });
 
     function addForm() {
-        $('#modal-supplier').modal('show');
+        $('#modal-').modal('show');
     }
 
     function showDetail(url) {

@@ -12,18 +12,18 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group row">
-                        <label for="nama_produk" class="col-lg-2 col-lg-offset-1 control-label">Nama</label>
+                        <label for="nama_product" class="col-lg-2 col-lg-offset-1 control-label">Nama</label>
                         <div class="col-lg-6">
-                            <input type="text" name="nama_produk" id="nama_produk" class="form-control" required autofocus>
+                            <input type="text" name="nama_product" id="nama_product" class="form-control" required autofocus>
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="id_kategori" class="col-lg-2 col-lg-offset-1 control-label">Kategori</label>
+                        <label for="id_category" class="col-lg-2 col-lg-offset-1 control-label">category</label>
                         <div class="col-lg-6">
-                            <select name="id_kategori" id="id_kategori" class="form-control" required>
-                                <option value="">Pilih Kategori</option>
-                                @foreach ($kategori as $key => $item)
+                            <select name="id_category" id="id_category" class="form-control" required>
+                                <option value="">Pilih category</option>
+                                @foreach ($category as $key => $item)
                                 <option value="{{ $key }}">{{ $item }}</option>
                                 @endforeach
                             </select>

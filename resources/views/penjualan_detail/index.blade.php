@@ -42,17 +42,17 @@
         <div class="box">
             <div class="box-body">
                     
-                <form class="form-produk">
+                <form class="form-product">
                     @csrf
                     <div class="form-group row">
-                        <label for="kode_produk" class="col-lg-2">Kode Produk</label>
+                        <label for="kode_product" class="col-lg-2">Kode product</label>
                         <div class="col-lg-5">
                             <div class="input-group">
                                 <input type="hidden" name="id_penjualan" id="id_penjualan" value="{{ $id_penjualan }}">
-                                <input type="hidden" name="id_produk" id="id_produk">
-                                <input type="text" class="form-control" name="kode_produk" id="kode_produk">
+                                <input type="hidden" name="id_product" id="id_product">
+                                <input type="text" class="form-control" name="kode_product" id="kode_product">
                                 <span class="input-group-btn">
-                                    <button onclick="tampilProduk()" class="btn btn-info btn-flat" type="button"><i class="fa fa-arrow-right"></i></button>
+                                    <button onclick="tampilproduct()" class="btn btn-info btn-flat" type="button"><i class="fa fa-arrow-right"></i></button>
                                 </span>
                             </div>
                         </div>
@@ -141,7 +141,7 @@
     </div>
 </div>
 
-@includeIf('penjualan_detail.produk')
+@includeIf('penjualan_detail.product')
 @includeIf('penjualan_detail.member')
 @endsection
 
@@ -160,8 +160,8 @@
             },
             columns: [
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
-                {data: 'kode_produk'},
-                {data: 'nama_produk'},
+                {data: 'kode_product'},
+                {data: 'nama_product'},
                 {data: 'harga_jual'},
                 {data: 'jumlah'},
                 {data: 'diskon'},
@@ -178,7 +178,7 @@
                 $('#diterima').trigger('input');
             }, 300);
         });
-        table2 = $('.table-produk').DataTable();
+        table2 = $('.table-product').DataTable();
 
         $(document).on('input', '.quantity', function () {
             let id = $(this).data('id');
@@ -234,25 +234,25 @@
         });
     });
 
-    function tampilProduk() {
-        $('#modal-produk').modal('show');
+    function tampilproduct() {
+        $('#modal-product').modal('show');
     }
 
-    function hideProduk() {
-        $('#modal-produk').modal('hide');
+    function hideproduct() {
+        $('#modal-product').modal('hide');
     }
 
-    function pilihProduk(id, kode) {
-        $('#id_produk').val(id);
-        $('#kode_produk').val(kode);
-        hideProduk();
-        tambahProduk();
+    function pilihproduct(id, kode) {
+        $('#id_product').val(id);
+        $('#kode_product').val(kode);
+        hideproduct();
+        tambahproduct();
     }
 
-    function tambahProduk() {
-        $.post('{{ route('transaksi.store') }}', $('.form-produk').serialize())
+    function tambahproduct() {
+        $.post('{{ route('transaksi.store') }}', $('.form-product').serialize())
             .done(response => {
-                $('#kode_produk').focus();
+                $('#kode_product').focus();
                 table.ajax.reload(() => loadForm($('#diskon').val()));
             })
             .fail(errors => {

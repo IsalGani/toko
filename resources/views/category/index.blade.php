@@ -1,12 +1,12 @@
 @extends('layouts.master')
 
 @section('title')
-    Daftar Kategori
+    Daftar category
 @endsection
 
 @section('breadcrumb')
     @parent
-    <li class="active">Daftar Kategori</li>
+    <li class="active">Daftar category</li>
 @endsection
 
 @section('content')
@@ -14,13 +14,13 @@
     <div class="col-lg-12">
         <div class="box">
             <div class="box-header with-border">
-                <button onclick="addForm('{{ route('kategori.store') }}')" class="btn btn-success btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah</button>
+                <button onclick="addForm('{{ route('category.store') }}')" class="btn btn-success btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah</button>
             </div>
             <div class="box-body table-responsive">
                 <table class="table table-stiped table-bordered">
                     <thead>
                         <th width="5%">No</th>
-                        <th>Kategori</th>
+                        <th>category</th>
                         <th width="15%"><i class="fa fa-cog"></i></th>
                     </thead>
                 </table>
@@ -29,7 +29,7 @@
     </div>
 </div>
 
-@includeIf('kategori.form')
+@includeIf('category.form')
 @endsection
 
 @push('scripts')
@@ -41,11 +41,11 @@
             processing: true,
             autoWidth: false,
             ajax: {
-                url: '{{ route('kategori.data') }}',
+                url: '{{ route('category.data') }}',
             },
             columns: [
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
-                {data: 'nama_kategori'},
+                {data: 'nama_category'},
                 {data: 'aksi', searchable: false, sortable: false},
             ]
         });
@@ -67,26 +67,26 @@
 
     function addForm(url) {
         $('#modal-form').modal('show');
-        $('#modal-form .modal-title').text('Tambah Kategori');
+        $('#modal-form .modal-title').text('Tambah category');
 
         $('#modal-form form')[0].reset();
         $('#modal-form form').attr('action', url);
         $('#modal-form [name=_method]').val('post');
-        $('#modal-form [name=nama_kategori]').focus();
+        $('#modal-form [name=nama_category]').focus();
     }
 
     function editForm(url) {
         $('#modal-form').modal('show');
-        $('#modal-form .modal-title').text('Edit Kategori');
+        $('#modal-form .modal-title').text('Edit category');
 
         $('#modal-form form')[0].reset();
         $('#modal-form form').attr('action', url);
         $('#modal-form [name=_method]').val('put');
-        $('#modal-form [name=nama_kategori]').focus();
+        $('#modal-form [name=nama_category]').focus();
 
         $.get(url)
             .done((response) => {
-                $('#modal-form [name=nama_kategori]').val(response.nama_kategori);
+                $('#modal-form [name=nama_category]').val(response.nama_category);
             })
             .fail((errors) => {
                 alert('Tidak dapat menampilkan data');

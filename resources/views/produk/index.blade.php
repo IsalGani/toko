@@ -1,12 +1,12 @@
 @extends('layouts.master')
 
 @section('title')
-    Daftar Produk
+    Daftar product
 @endsection
 
 @section('breadcrumb')
     @parent
-    <li class="active">Daftar Produk</li>
+    <li class="active">Daftar product</li>
 @endsection
 
 @section('content')
@@ -15,13 +15,13 @@
         <div class="box">
             <div class="box-header with-border">
                 <div class="btn-group">
-                    <button onclick="addForm('{{ route('produk.store') }}')" class="btn btn-success btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah</button>
-                    <button onclick="deleteSelected('{{ route('produk.delete_selected') }}')" class="btn btn-danger btn-xs btn-flat"><i class="fa fa-trash"></i> Hapus</button>
-                    <button onclick="cetakBarcode('{{ route('produk.cetak_barcode') }}')" class="btn btn-info btn-xs btn-flat"><i class="fa fa-barcode"></i> Cetak Barcode</button>
+                    <button onclick="addForm('{{ route('product.store') }}')" class="btn btn-success btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah</button>
+                    <button onclick="deleteSelected('{{ route('product.delete_selected') }}')" class="btn btn-danger btn-xs btn-flat"><i class="fa fa-trash"></i> Hapus</button>
+                    <button onclick="cetakBarcode('{{ route('product.cetak_barcode') }}')" class="btn btn-info btn-xs btn-flat"><i class="fa fa-barcode"></i> Cetak Barcode</button>
                 </div>
             </div>
             <div class="box-body table-responsive">
-                <form action="" method="post" class="form-produk">
+                <form action="" method="post" class="form-product">
                     @csrf
                     <table class="table table-stiped table-bordered">
                         <thead>
@@ -31,7 +31,7 @@
                             <th width="5%">No</th>
                             <th>Kode</th>
                             <th>Nama</th>
-                            <th>Kategori</th>
+                            <th>category</th>
                             <th>Merk</th>
                             <th>Harga Beli</th>
                             <th>Harga Jual</th>
@@ -46,7 +46,7 @@
     </div>
 </div>
 
-@includeIf('produk.form')
+@includeIf('product.form')
 @endsection
 
 @push('scripts')
@@ -58,14 +58,14 @@
             processing: true,
             autoWidth: false,
             ajax: {
-                url: '{{ route('produk.data') }}',
+                url: '{{ route('product.data') }}',
             },
             columns: [
                 {data: 'select_all', searchable: false, sortable: false},
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
-                {data: 'kode_produk'},
-                {data: 'nama_produk'},
-                {data: 'nama_kategori'},
+                {data: 'kode_product'},
+                {data: 'nama_product'},
+                {data: 'nama_category'},
                 {data: 'merk'},
                 {data: 'harga_beli'},
                 {data: 'harga_jual'},
@@ -96,27 +96,27 @@
 
     function addForm(url) {
         $('#modal-form').modal('show');
-        $('#modal-form .modal-title').text('Tambah Produk');
+        $('#modal-form .modal-title').text('Tambah product');
 
         $('#modal-form form')[0].reset();
         $('#modal-form form').attr('action', url);
         $('#modal-form [name=_method]').val('post');
-        $('#modal-form [name=nama_produk]').focus();
+        $('#modal-form [name=nama_product]').focus();
     }
 
     function editForm(url) {
         $('#modal-form').modal('show');
-        $('#modal-form .modal-title').text('Edit Produk');
+        $('#modal-form .modal-title').text('Edit product');
 
         $('#modal-form form')[0].reset();
         $('#modal-form form').attr('action', url);
         $('#modal-form [name=_method]').val('put');
-        $('#modal-form [name=nama_produk]').focus();
+        $('#modal-form [name=nama_product]').focus();
 
         $.get(url)
             .done((response) => {
-                $('#modal-form [name=nama_produk]').val(response.nama_produk);
-                $('#modal-form [name=id_kategori]').val(response.id_kategori);
+                $('#modal-form [name=nama_product]').val(response.nama_product);
+                $('#modal-form [name=id_category]').val(response.id_category);
                 $('#modal-form [name=merk]').val(response.merk);
                 $('#modal-form [name=harga_beli]').val(response.harga_beli);
                 $('#modal-form [name=harga_jual]').val(response.harga_jual);
@@ -148,7 +148,7 @@
     function deleteSelected(url) {
         if ($('input:checked').length > 1) {
             if (confirm('Yakin ingin menghapus data terpilih?')) {
-                $.post(url, $('.form-produk').serialize())
+                $.post(url, $('.form-product').serialize())
                     .done((response) => {
                         table.ajax.reload();
                     })
@@ -171,7 +171,7 @@
             alert('Pilih minimal 3 data untuk dicetak');
             return;
         } else {
-            $('.form-produk')
+            $('.form-product')
                 .attr('target', '_blank')
                 .attr('action', url)
                 .submit();

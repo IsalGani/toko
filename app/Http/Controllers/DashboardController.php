@@ -2,47 +2,60 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Kategori;
-use App\Models\Member;
+
+use App\Models\Product;
+use App\Models\Category;
 use App\Models\Pembelian;
-use App\Models\Pengeluaran;
 use App\Models\Penjualan;
-use App\Models\Produk;
-use App\Models\Supplier;
-use Illuminate\Http\Request;
+use App\Models\Pengeluaran;
+
+use App\Http\Controllers\Controller;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $kategori = Kategori::count();
-        $produk = Produk::count();
-        $supplier = Supplier::count();
-        $member = Member::count();
+        $level = auth()->user()->level;
 
-        $tanggal_awal = date('Y-m-01');
-        $tanggal_akhir = date('Y-m-d');
+        if ($level == 1) { // ADMIN
+            $category = Category::count();
+            $product = Product::count();
 
-        $data_tanggal = array();
-        $data_pendapatan = array();
+            // Pendapatan Harian
+            $tanggal_awal = date('Y-m-01');
+            $tanggal_akhir = date('Y-m-d');
+            $data_tanggal = [];
+            $data_pendapatan = [];
 
-        while (strtotime($tanggal_awal) <= strtotime($tanggal_akhir)) {
-            $data_tanggal[] = (int) substr($tanggal_awal, 8, 2);
+            while (strtotime($tanggal_awal) <= strtotime($tanggal_akhir)) {
+                $data_tanggal[] = (int) substr($tanggal_awal, 8, 2);
 
-            $total_penjualan = Penjualan::where('created_at', 'LIKE', "%$tanggal_awal%")->sum('bayar');
-            $total_pembelian = Pembelian::where('created_at', 'LIKE', "%$tanggal_awal%")->sum('bayar');
-            $total_pengeluaran = Pengeluaran::where('created_at', 'LIKE', "%$tanggal_awal%")->sum('nominal');
+                $total_penjualan = Penjualan::whereDate('created_at', $tanggal_awal)->sum('bayar');
 
-            $pendapatan = $total_penjualan - $total_pembelian - $total_pengeluaran;
-            $data_pendapatan[] += $pendapatan;
+                $data_pendapatan[] = $total_penjualan;
 
-            $tanggal_awal = date('Y-m-d', strtotime("+1 day", strtotime($tanggal_awal)));
+                $tanggal_awal = date('Y-m-d', strtotime("+1 day", strtotime($tanggal_awal)));
+            }
+
+            $stok_rendah = Product::where('stok', '<', 10)->get();
+
+            return view('admin.dashboard', compact(
+                'category',
+                'product',
+                'data_tanggal',
+                'data_pendapatan',
+                'stok_rendah'
+            ));
         }
 
-        if (auth()->user()->level == 1) {
-            return view('admin.dashboard', compact('kategori', 'produk', 'supplier', 'member', 'tanggal_awal', 'tanggal_akhir', 'data_tanggal', 'data_pendapatan'));
-        } else {
+        if ($level == 2) { // KASIR
             return view('kasir.dashboard');
         }
+
+        if ($level == 0) { // PELANGGAN
+            return view('pelanggan.dashboard');
+        }
+
+        abort(403); // Role tidak dikenal
     }
 }

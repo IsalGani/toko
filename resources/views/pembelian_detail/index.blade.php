@@ -43,32 +43,32 @@
             <div class="box-header with-border">
                 <table>
                     <tr>
-                        <td>Supplier</td>
-                        <td>: {{ $supplier->nama }}</td>
+                        <td></td>
+                        <td>: {{ $->nama }}</td>
                     </tr>
                     <tr>
                         <td>Telepon</td>
-                        <td>: {{ $supplier->telepon }}</td>
+                        <td>: {{ $->telepon }}</td>
                     </tr>
                     <tr>
                         <td>Alamat</td>
-                        <td>: {{ $supplier->alamat }}</td>
+                        <td>: {{ $->alamat }}</td>
                     </tr>
                 </table>
             </div>
             <div class="box-body">
                     
-                <form class="form-produk">
+                <form class="form-product">
                     @csrf
                     <div class="form-group row">
-                        <label for="kode_produk" class="col-lg-2">Kode Produk</label>
+                        <label for="kode_product" class="col-lg-2">Kode product</label>
                         <div class="col-lg-5">
                             <div class="input-group">
                                 <input type="hidden" name="id_pembelian" id="id_pembelian" value="{{ $id_pembelian }}">
-                                <input type="hidden" name="id_produk" id="id_produk">
-                                <input type="text" class="form-control" name="kode_produk" id="kode_produk">
+                                <input type="hidden" name="id_product" id="id_product">
+                                <input type="text" class="form-control" name="kode_product" id="kode_product">
                                 <span class="input-group-btn">
-                                    <button onclick="tampilProduk()" class="btn btn-info btn-flat" type="button"><i class="fa fa-arrow-right"></i></button>
+                                    <button onclick="tampilproduct()" class="btn btn-info btn-flat" type="button"><i class="fa fa-arrow-right"></i></button>
                                 </span>
                             </div>
                         </div>
@@ -130,7 +130,7 @@
     </div>
 </div>
 
-@includeIf('pembelian_detail.produk')
+@includeIf('pembelian_detail.product')
 @endsection
 
 @push('scripts')
@@ -148,8 +148,8 @@
             },
             columns: [
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
-                {data: 'kode_produk'},
-                {data: 'nama_produk'},
+                {data: 'kode_product'},
+                {data: 'nama_product'},
                 {data: 'harga_beli'},
                 {data: 'jumlah'},
                 {data: 'subtotal'},
@@ -162,7 +162,7 @@
         .on('draw.dt', function () {
             loadForm($('#diskon').val());
         });
-        table2 = $('.table-produk').DataTable();
+        table2 = $('.table-product').DataTable();
 
         $(document).on('input', '.quantity', function () {
             let id = $(this).data('id');
@@ -208,25 +208,25 @@
         });
     });
 
-    function tampilProduk() {
-        $('#modal-produk').modal('show');
+    function tampilproduct() {
+        $('#modal-product').modal('show');
     }
 
-    function hideProduk() {
-        $('#modal-produk').modal('hide');
+    function hideproduct() {
+        $('#modal-product').modal('hide');
     }
 
-    function pilihProduk(id, kode) {
-        $('#id_produk').val(id);
-        $('#kode_produk').val(kode);
-        hideProduk();
-        tambahProduk();
+    function pilihproduct(id, kode) {
+        $('#id_product').val(id);
+        $('#kode_product').val(kode);
+        hideproduct();
+        tambahproduct();
     }
 
-    function tambahProduk() {
-        $.post('{{ route('pembelian_detail.store') }}', $('.form-produk').serialize())
+    function tambahproduct() {
+        $.post('{{ route('pembelian_detail.store') }}', $('.form-product').serialize())
             .done(response => {
-                $('#kode_produk').focus();
+                $('#kode_product').focus();
                 table.ajax.reload(() => loadForm($('#diskon').val()));
             })
             .fail(errors => {

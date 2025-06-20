@@ -1,12 +1,12 @@
 @extends('layouts.master')
 
 @section('title')
-    Daftar Supplier
+    Daftar 
 @endsection
 
 @section('breadcrumb')
     @parent
-    <li class="active">Daftar Supplier</li>
+    <li class="active">Daftar </li>
 @endsection
 
 @section('content')
@@ -14,7 +14,7 @@
     <div class="col-lg-12">
         <div class="box">
             <div class="box-header with-border">
-                <button onclick="addForm('{{ route('supplier.store') }}')" class="btn btn-success btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah</button>
+                <button onclick="addForm('{{ route('.store') }}')" class="btn btn-success btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah</button>
             </div>
             <div class="box-body table-responsive">
                 <table class="table table-stiped table-bordered">
@@ -31,7 +31,7 @@
     </div>
 </div>
 
-@includeIf('supplier.form')
+@includeIf('.form')
 @endsection
 
 @push('scripts')
@@ -43,7 +43,7 @@
             processing: true,
             autoWidth: false,
             ajax: {
-                url: '{{ route('supplier.data') }}',
+                url: '{{ route('.data') }}',
             },
             columns: [
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
@@ -71,7 +71,7 @@
 
     function addForm(url) {
         $('#modal-form').modal('show');
-        $('#modal-form .modal-title').text('Tambah Supplier');
+        $('#modal-form .modal-title').text('Tambah ');
 
         $('#modal-form form')[0].reset();
         $('#modal-form form').attr('action', url);
@@ -81,7 +81,7 @@
 
     function editForm(url) {
         $('#modal-form').modal('show');
-        $('#modal-form .modal-title').text('Edit Supplier');
+        $('#modal-form .modal-title').text('Edit ');
 
         $('#modal-form form')[0].reset();
         $('#modal-form form').attr('action', url);

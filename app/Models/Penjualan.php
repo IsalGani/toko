@@ -9,17 +9,13 @@ class Penjualan extends Model
 {
     use HasFactory;
 
-    protected $table = 'penjualan';
-    protected $primaryKey = 'id_penjualan';
-    protected $guarded = [];
+    protected $fillable = ['user_id', 'tanggal', 'total_harga', 'bayar'];
 
-    public function member()
-    {
-        return $this->hasOne(Member::class, 'id_member', 'id_member');
+    public function user() {
+        return $this->belongsTo(User::class);
     }
 
-    public function user()
-    {
-        return $this->hasOne(User::class, 'id', 'id_user');
+    public function details() {
+        return $this->hasMany(PenjualanDetail::class);
     }
 }
