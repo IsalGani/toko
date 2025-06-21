@@ -59,6 +59,15 @@
                 </tr>
             </tbody>
         </table>
+        <form action="{{ route('keranjang.bayar') }}" method="POST">
+            @csrf
+            <div class="form-group">
+                <label for="bayar">Jumlah Bayar (Rp)</label>
+                <input type="number" name="bayar" class="form-control" required min="{{ $total }}">
+            </div>
+            <button class="btn btn-success">Bayar & Checkout</button>
+        </form>
+
 
         <form action="{{ route('keranjang.checkout') }}" method="POST">
             @csrf

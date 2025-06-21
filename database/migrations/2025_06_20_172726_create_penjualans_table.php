@@ -18,7 +18,10 @@ class CreatePenjualansTable extends Migration
             $table->unsignedBigInteger('user_id'); // kasir
             $table->dateTime('tanggal');
             $table->decimal('total_harga', 12, 2);
-            $table->decimal('bayar', 12, 2);
+            $table->integer('bayar')->default(0);
+            $table->integer('kembalian')->default(0);
+            $table->string('status')->default('belum lunas'); // atau 'lunas'
+
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

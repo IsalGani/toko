@@ -127,6 +127,7 @@ Route::middleware(['auth', 'level:0'])->group(function () {
     Route::get('/keranjang/riwayat', [\App\Http\Controllers\KeranjangController::class, 'riwayat'])->name('keranjang.riwayat');
     Route::post('/keranjang/checkout', [KeranjangController::class, 'checkout'])->name('keranjang.checkout');
     Route::get('/keranjang/nota/{id}/cetak', [\App\Http\Controllers\KeranjangController::class, 'cetakNota'])->name('keranjang.nota.cetak');
+    Route::post('/keranjang/bayar', [KeranjangController::class, 'bayar'])->name('keranjang.bayar');
 
 
 
@@ -138,7 +139,7 @@ Route::middleware(['auth', 'level:0'])->group(function () {
     // Nota
     Route::get('/nota/{id}', [KeranjangController::class, 'nota'])->name('keranjang.nota');
     Route::get('/nota/{id}', [\App\Http\Controllers\KeranjangController::class, 'cetakNota'])->name('nota.cetak');
-    
+
 
 
 
