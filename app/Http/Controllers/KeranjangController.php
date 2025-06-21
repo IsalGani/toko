@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Penjualan;
 use Illuminate\Http\Request;
 use App\Models\PenjualanDetail;
+use App\Http\Controllers\Controller;
 
 class KeranjangController extends Controller
 {
@@ -39,7 +41,6 @@ class KeranjangController extends Controller
         }
 
         session()->put('cart', $cart);
-
         return redirect()->back()->with('success', 'Produk ditambahkan ke keranjang.');
     }
 
@@ -60,9 +61,7 @@ class KeranjangController extends Controller
             return redirect()->route('keranjang.index')->with('error', 'Keranjang kosong!');
         }
 
-        $total = array_sum(array_map(function ($item) {
-            return $item['subtotal'] ?? 0;
-        }, $cart));
+        $total = array_sum(array_map(fn($item) => $item['subtotal'] ?? 0, $cart));
 
         $penjualan = Penjualan::create([
             'user_id'     => auth()->id(),
@@ -106,5 +105,28 @@ class KeranjangController extends Controller
             ->get();
 
         return view('pelanggan.riwayat', compact('riwayat'));
+    }
+
+    public function nota($id)
+    {
+        $penjualan = Penjualan::with(['details.product', 'user'])->findOrFail($id);
+
+        if ($penjualan->user_id != auth()->id()) {
+            abort(403);
+        }
+
+        return view('pelanggan.nota', compact('penjualan'));
+    }
+
+    public function cetakNota($id)
+    {
+        $penjualan = Penjualan::with(['details.product', 'user'])->findOrFail($id);
+
+        if ($penjualan->user_id !== auth()->id()) {
+            abort(403, 'Akses ditolak');
+        }
+
+        $pdf = Pdf::loadView('pelanggan.nota_pdf', compact('penjualan'));
+        return $pdf->stream('nota-' . $penjualan->id . '.pdf');
     }
 }

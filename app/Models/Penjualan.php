@@ -10,8 +10,12 @@ class Penjualan extends Model
     use HasFactory;
 
     protected $table = 'penjualans';
-    protected $fillable = ['user_id', 'total_harga', 'bayar', 'tanggal']; // sesuaikan dengan kolom di migrasi
+    protected $fillable = ['user_id', 'total_harga', 'bayar', 'tanggal'];
 
+    // Tambahkan casting agar 'tanggal' dianggap sebagai datetime
+    protected $casts = [
+        'tanggal' => 'datetime',
+    ];
 
     public function user()
     {

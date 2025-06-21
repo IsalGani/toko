@@ -114,16 +114,32 @@ Route::middleware(['auth', 'level:1,2'])->group(function () {
 // ===================================
 Route::middleware(['auth', 'level:0'])->group(function () {
 
-    Route::get('/', [BerandaController::class, 'index'])->name('pelanggan.index');
+    Route::get('/', [ProductController::class, 'index'])->name('product.index');
     Route::get('/pelanggan', [PelangganController::class, 'index'])->name('pelanggan.index');
+
+    // Product
     Route::get('/product', [\App\Http\Controllers\ProductController::class, 'index'])->name('product.index');
+
+    // Keranjang
     Route::get('/keranjang', [KeranjangController::class, 'index'])->name('keranjang.index');
     Route::post('/keranjang/tambah', [KeranjangController::class, 'tambah'])->name('keranjang.tambah');
     Route::delete('/keranjang/hapus/{id}', [KeranjangController::class, 'hapus'])->name('keranjang.hapus');
+    Route::get('/keranjang/riwayat', [\App\Http\Controllers\KeranjangController::class, 'riwayat'])->name('keranjang.riwayat');
     Route::post('/keranjang/checkout', [KeranjangController::class, 'checkout'])->name('keranjang.checkout');
+    Route::get('/keranjang/nota/{id}/cetak', [\App\Http\Controllers\KeranjangController::class, 'cetakNota'])->name('keranjang.nota.cetak');
+
+
+
     Route::get('/riwayat-pesanan', [KeranjangController::class, 'riwayat'])->name('checkout.riwayat');
     Route::get('/pesanan', [\App\Http\Controllers\PesananController::class, 'index'])->name('pesanan.index');
     Route::get('/riwayat', [KeranjangController::class, 'riwayat'])->name('riwayat');
+
+
+    // Nota
+    Route::get('/nota/{id}', [KeranjangController::class, 'nota'])->name('keranjang.nota');
+    Route::get('/nota/{id}', [\App\Http\Controllers\KeranjangController::class, 'cetakNota'])->name('nota.cetak');
+    
+
 
 
 
