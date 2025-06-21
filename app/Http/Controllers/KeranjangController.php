@@ -6,11 +6,9 @@ use App\Models\Product;
 use App\Models\Penjualan;
 use Illuminate\Http\Request;
 use App\Models\PenjualanDetail;
-use App\Http\Controllers\Controller;
 
 class KeranjangController extends Controller
 {
-    //
     public function index()
     {
         $cart = session()->get('cart', []);
@@ -22,22 +20,27 @@ class KeranjangController extends Controller
         $product = Product::findOrFail($request->product_id);
         $cart = session()->get('cart', []);
 
-        // Jika produk sudah ada di keranjang
+        $qty = (int) $request->qty;
+        $discount = $product->discount ?? 0;
+        $hargaDiskon = $product->price - $discount;
+
         if (isset($cart[$product->id])) {
-            $cart[$product->id]['qty'] += $request->qty;
-            $cart[$product->id]['subtotal'] = $cart[$product->id]['qty'] * $product->price;
+            $cart[$product->id]['qty'] += $qty;
+            $cart[$product->id]['subtotal'] = $cart[$product->id]['qty'] * $hargaDiskon;
         } else {
             $cart[$product->id] = [
-                'name' => $product->name,
-                'price' => $product->price,
-                'qty' => $request->qty,
-                'subtotal' => $product->price * $request->qty
+                'name'         => $product->name,
+                'price'        => $product->price,
+                'discount'     => $discount,
+                'harga_diskon' => $hargaDiskon,
+                'qty'          => $qty,
+                'subtotal'     => $hargaDiskon * $qty,
             ];
         }
 
         session()->put('cart', $cart);
 
-        return redirect()->route('keranjang.index')->with('success', 'Produk ditambahkan ke keranjang.');
+        return redirect()->back()->with('success', 'Produk ditambahkan ke keranjang.');
     }
 
     public function hapus($id)
@@ -57,19 +60,20 @@ class KeranjangController extends Controller
             return redirect()->route('keranjang.index')->with('error', 'Keranjang kosong!');
         }
 
-        $total = array_sum(array_column($cart, 'subtotal'));
+        $total = array_sum(array_map(function ($item) {
+            return $item['subtotal'] ?? 0;
+        }, $cart));
 
-        // Simpan transaksi ke tabel penjualans
-        $penjualan = \App\Models\Penjualan::create([
-            'user_id' => auth()->id(),  // penting! auth()->id() akan mengisi ID user yang login
-            'tanggal' => now(),
+        $penjualan = Penjualan::create([
+            'user_id'     => auth()->id(),
+            'tanggal'     => now(),
             'total_harga' => $total,
-            'bayar' => $total,
+            'bayar'       => $total,
         ]);
 
         foreach ($cart as $product_id => $item) {
-            // Kurangi stok dulu, validasi stok jika ingin
-            $product = \App\Models\Product::find($product_id);
+            $product = Product::find($product_id);
+
             if (!$product || $product->stock < $item['qty']) {
                 return redirect()->route('keranjang.index')->with('error', "Stok tidak cukup untuk {$item['name']}");
             }
@@ -77,22 +81,22 @@ class KeranjangController extends Controller
             $product->stock -= $item['qty'];
             $product->save();
 
-            // Simpan detail transaksi
-            \App\Models\PenjualanDetail::create([
+            $hargaDiskon = $item['harga_diskon'] ?? ($item['price'] - ($item['discount'] ?? 0));
+            $subtotal = $item['subtotal'] ?? $hargaDiskon * $item['qty'];
+
+            PenjualanDetail::create([
                 'penjualan_id' => $penjualan->id,
-                'product_id' => $product_id,
-                'harga' => $item['price'],
-                'jumlah' => $item['qty'],
-                'subtotal' => $item['subtotal'],
+                'product_id'   => $product_id,
+                'harga'        => $hargaDiskon,
+                'jumlah'       => $item['qty'],
+                'subtotal'     => $subtotal,
             ]);
         }
 
-        // Kosongkan keranjang
         session()->forget('cart');
 
         return redirect()->route('keranjang.index')->with('success', 'Pesanan berhasil disimpan!');
     }
-
 
     public function riwayat()
     {

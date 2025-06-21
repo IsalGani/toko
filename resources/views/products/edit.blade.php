@@ -30,6 +30,10 @@
                         required>
                 </div>
 
+                <label>Diskon (%)</label>
+                <input type="number" name="discount" class="form-control"
+                    value="{{ old('discount', $product->discount ?? 0) }}" min="0" max="100">
+
                 <button class="btn btn-success">Perbarui</button>
                 <a href="{{ route('products.index') }}" class="btn btn-default">Batal</a>
             </form>

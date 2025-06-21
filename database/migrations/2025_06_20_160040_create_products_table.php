@@ -20,6 +20,7 @@ class CreateProductsTable extends Migration
             $table->unsignedBigInteger('category_id')->nullable();
             $table->integer('stock')->default(0);
             $table->decimal('price', 10, 2);
+            $table->unsignedInteger('discount')->default(0); // diskon dalam persen, misal 10 berarti 10%
             $table->timestamps();
 
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null');

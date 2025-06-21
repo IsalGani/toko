@@ -2,24 +2,25 @@
 
 namespace Database\Seeders;
 
-use App\Models\Product;
 use Illuminate\Database\Seeder;
+use App\Models\Product;
+use App\Models\Category;
 
 class ProductSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run(): void
     {
-        Product::create([
-            'name' => 'Contoh Produk',
-            'description' => 'Produk contoh untuk testing',
-            'category_id' => null,
-            'stock' => 100,
-            'price' => 15000,
-        ]);
+        $categoryIds = Category::pluck('id');
+
+        for ($i = 1; $i <= 50; $i++) {
+            Product::create([
+                'name' => "Produk $i",
+                'category_id' => $categoryIds->random(),
+                'stock' => rand(10, 100),
+                'price' => rand(1000, 50000),
+                'discount' => rand(0, 10000),
+                'description' => "Deskripsi produk ke-$i"
+            ]);
+        }
     }
 }

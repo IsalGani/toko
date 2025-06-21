@@ -84,6 +84,9 @@ Route::middleware(['auth', 'level:1,2'])->group(function () {
     Route::get('/category/data', [CategoryController::class, 'data'])->name('category.data');
     Route::get('/category/{category}/edit', [CategoryController::class, 'edit'])->name('category.edit');
 
+    // Produk
+    Route::resource('products', ProductController::class);
+    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 
     // Laporan ringkas
     Route::get('/laporan', [ReportController::class, 'index'])->name('reports.index');
@@ -113,7 +116,7 @@ Route::middleware(['auth', 'level:0'])->group(function () {
 
     Route::get('/', [BerandaController::class, 'index'])->name('pelanggan.index');
     Route::get('/pelanggan', [PelangganController::class, 'index'])->name('pelanggan.index');
-    Route::get('/produk', [\App\Http\Controllers\PelangganController::class, 'index'])->name('pelanggan.produk');
+    Route::get('/product', [\App\Http\Controllers\ProductController::class, 'index'])->name('product.index');
     Route::get('/keranjang', [KeranjangController::class, 'index'])->name('keranjang.index');
     Route::post('/keranjang/tambah', [KeranjangController::class, 'tambah'])->name('keranjang.tambah');
     Route::delete('/keranjang/hapus/{id}', [KeranjangController::class, 'hapus'])->name('keranjang.hapus');

@@ -11,7 +11,14 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'category_id', 'stock', 'price', 'description'];
+    protected $fillable = [
+        'name',
+        'category_id',
+        'stock',
+        'price',
+        'description', // hanya jika kolom ini memang ada di DB
+        'discount',
+    ];
 
     public function category()
     {
@@ -20,6 +27,6 @@ class Product extends Model
 
     public function penjualan_detail()
     {
-        return $this->hasMany(PenjualanDetail::class, 'id_produk');
+        return $this->hasMany(PenjualanDetail::class, 'product_id'); // sebaiknya pakai nama 'product_id' bukan 'id_produk'
     }
 }

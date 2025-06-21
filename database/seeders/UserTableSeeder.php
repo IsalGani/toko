@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class UserTableSeeder extends Seeder
 {
@@ -44,5 +45,40 @@ class UserTableSeeder extends Seeder
                 $user
             );
         }, $users);
+
+
+        // Admin
+        User::create([
+            'name' => 'Admin 1',
+            'email' => 'admin1@mail.com',
+            'password' => Hash::make('password'),
+            'level' => 1,
+        ]);
+        User::create([
+            'name' => 'Admin 2',
+            'email' => 'admin2@mail.com',
+            'password' => Hash::make('password'),
+            'level' => 1,
+        ]);
+
+        // Kasir
+        for ($i = 1; $i <= 5; $i++) {
+            User::create([
+                'name' => "Kasir $i",
+                'email' => "kasir$i@mail.com",
+                'password' => Hash::make('password'),
+                'level' => 2,
+            ]);
+        }
+
+        // Pelanggan
+        for ($i = 1; $i <= 50; $i++) {
+            User::create([
+                'name' => "Pelanggan $i",
+                'email' => "pelanggan$i@mail.com",
+                'password' => Hash::make('password'),
+                'level' => 0,
+            ]);
+        }
     }
 }
