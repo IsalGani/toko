@@ -11,25 +11,22 @@ class CreateProductsTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->unsignedBigInteger('category_id')->nullable(); // ✅ kolom benar
-
-            $table->integer('stok')->default(0);
-            $table->decimal('harga', 10, 2)->nullable();
+            $table->string('name');
+            $table->text('description')->nullable();
+            $table->unsignedBigInteger('category_id')->nullable();
+            $table->integer('stock')->default(0);
+            $table->decimal('price', 10, 2);
             $table->timestamps();
 
-            $table->foreign('category_id') // ✅ sesuai kolom di atas
-                ->references('id')       // ✅ sesuai kolom di categories
-                ->on('categories')
-                ->onDelete('set null');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null');
         });
     }
 
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('products');
     }

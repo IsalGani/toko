@@ -16,12 +16,12 @@ class CreatePenjualanDetailsTable extends Migration
         Schema::create('penjualan_details', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('penjualan_id');
-            $table->unsignedBigInteger('product_id');
+            $table->foreign('penjualan_id')->references('id')->on('penjualans')->onDelete('cascade');
+            $table->unsignedBigInteger('product_id');     // FK ke tabel products
             $table->integer('jumlah');
             $table->decimal('harga', 12, 2);
+            $table->decimal('subtotal', 12, 2);
             $table->timestamps();
-
-            $table->foreign('penjualan_id')->references('id')->on('penjualans')->onDelete('cascade');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
     }

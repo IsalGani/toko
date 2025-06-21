@@ -9,13 +9,17 @@ class Penjualan extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'tanggal', 'total_harga', 'bayar'];
+    protected $table = 'penjualans';
+    protected $fillable = ['user_id', 'total_harga', 'bayar', 'tanggal']; // sesuaikan dengan kolom di migrasi
 
-    public function user() {
+
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function details() {
-        return $this->hasMany(PenjualanDetail::class);
+    public function details()
+    {
+        return $this->hasMany(PenjualanDetail::class, 'penjualan_id');
     }
 }

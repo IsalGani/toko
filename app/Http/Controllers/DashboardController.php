@@ -53,7 +53,7 @@ class DashboardController extends Controller
         }
 
         if ($level == 0) { // PELANGGAN
-            return view('pelanggan.dashboard');
+            return view('pelanggan.index');
         }
 
         abort(403); // Role tidak dikenal
